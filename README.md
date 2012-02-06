@@ -20,7 +20,9 @@ data storage.
 ### Redis Server
 
 ```ruby
-Rector.redis = 'localhost:6379'
+Rector.configure do |c|
+  c.redis = 'localhost:6379'
+end
 ```
 
 ## Job Creation (Master)
