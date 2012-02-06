@@ -62,7 +62,8 @@ class ProcessFileJob
 
     words = File.read(file).split(/\W/)
     words.reject(&:blank?).each do |word|
-      worker.data[word] += 1
+      worker.data[word] ||= 0 
+      worker.data[word]  += 1
     end
 
     worker.finish
