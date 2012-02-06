@@ -77,4 +77,16 @@ describe Rector::Backends::Redis do
       subject.read_job_data_to_hash.should == { "foo" => Set.new(["bar"]) }
     end
   end
+
+  describe "workers" do
+    it "adds a worker to a set" do
+      redis.expects(:sadd).with("#{namespace}:__workers__", "1234:5678")
+      subject.add_worker("1234:5678")
+    end
+
+    it "removes a worker from the set when it is finished" do
+      redis.expects(:srem).with("#{namespace}:__workers__", "1234:5678")
+      subject.finish_worker("1234:5678")
+    end
+  end
 end

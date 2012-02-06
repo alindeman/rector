@@ -1,7 +1,8 @@
 module Rector
   module Backends
     class Redis
-      KEY_LIST_SET = "__keys__"
+      KEY_LIST_SET    = "__keys__"
+      WORKER_LIST_SET = "__workers__"
 
       def initialize(namespace)
         @namespace = namespace
@@ -26,6 +27,14 @@ module Rector
 
       def read_job_data_to_hash
         Hash[keys.map { |k| [k, read(k)] }]
+      end
+
+      def add_worker(worker_id)
+        redis.sadd(WORKER_LIST_SET, worker_id)
+      end
+
+      def finish_worker(worker_id)
+        redis.srem(WORKER_LIST_SET, worker_id)
       end
 
       private
