@@ -58,5 +58,14 @@ describe Rector::Backends::Redis do
 
       subject.read_to_hash.should == { "foo" => 5 }
     end
+
+    it "reads lists" do
+      redis.stubs(:smembers).with("#{namespace}:__keys__").returns(["foo"])
+
+      redis.stubs(:type).with("#{namespace}:foo").returns("list")
+      redis.stubs(:lrange).with("#{namespace}:foo", 0, -1).returns(["bar"])
+
+      subject.read_to_hash.should == { "foo" => ["bar"] }
+    end
   end
 end
