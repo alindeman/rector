@@ -4,8 +4,8 @@ module Rector
       KEY_LIST_SET    = "__keys__"
       WORKER_LIST_SET = "__workers__"
 
-      def initialize(namespace)
-        @namespace = namespace
+      def initialize(job_id)
+        @job_id = job_id
       end
 
       def update_job_data_from_hash(hsh)
@@ -41,7 +41,7 @@ module Rector
 
       def redis
         @redis ||=
-          ::Redis::Namespace.new(@namespace, redis: Rector.configuration.redis)
+          ::Redis::Namespace.new(@job_id, redis: Rector.configuration.redis)
       end
 
       def keys
