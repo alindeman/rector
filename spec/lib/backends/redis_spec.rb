@@ -88,5 +88,13 @@ describe Rector::Backends::Redis do
       redis.expects(:srem).with("#{job_id}:__workers__", "1234:5678")
       subject.finish_worker("1234:5678")
     end
+
+    it "knows if workers are still working" do
+      redis.stubs(:scard).with("#{job_id}:__workers__").returns("1")
+      subject.workers_working?.should be_true
+
+      redis.stubs(:scard).with("#{job_id}:__workers__").returns("0")
+      subject.workers_working?.should be_false
+    end
   end
 end

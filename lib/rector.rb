@@ -3,6 +3,7 @@ require "redis-namespace"
 
 require_relative "rector/configuration"
 require_relative "rector/worker"
+require_relative "rector/job"
 require_relative "rector/backends"
 
 module Rector
