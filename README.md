@@ -23,7 +23,7 @@ data storage.
 
 ```ruby
 Rector.configure do |c|
-  c.redis = 'localhost:6379'
+  c.redis = Redis.new(:host => "10.0.1.1", :port => 6380)
 end
 ```
 
