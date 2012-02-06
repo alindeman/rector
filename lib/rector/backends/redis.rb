@@ -7,12 +7,7 @@ module Rector
         @namespace = namespace
       end
 
-      def redis
-        @redis ||=
-          ::Redis::Namespace.new(@namespace, redis: Rector.configuration.redis)
-      end
-
-      def update_from_hash(hsh)
+      def update_job_data_from_hash(hsh)
         redis.multi do
           redis.sadd(KEY_LIST_SET, *hsh.keys)
 
@@ -29,8 +24,15 @@ module Rector
         end
       end
 
-      def read_to_hash
+      def read_job_data_to_hash
         Hash[keys.map { |k| [k, read(k)] }]
+      end
+
+      private
+
+      def redis
+        @redis ||=
+          ::Redis::Namespace.new(@namespace, redis: Rector.configuration.redis)
       end
 
       def keys

@@ -24,28 +24,28 @@ describe Rector::Backends::Redis do
       }
 
       redis.expects(:sadd).with("#{namespace}:__keys__", "foo", "bar")
-      subject.update_from_hash(hsh)
+      subject.update_job_data_from_hash(hsh)
     end
 
     it "stores integers" do
       hsh = { "foo" => 1 }
 
       redis.expects(:incrby).with("#{namespace}:foo", 1)
-      subject.update_from_hash(hsh)
+      subject.update_job_data_from_hash(hsh)
     end
 
     it "stores lists" do
       hsh = { "foo" => ["a", "b", "c"] }
 
       redis.expects(:rpush).with("#{namespace}:foo", "a", "b", "c")
-      subject.update_from_hash(hsh)
+      subject.update_job_data_from_hash(hsh)
     end
 
     it "stores sets" do
       hsh = { "foo" => Set.new(["a", "b", "c"]) }
 
       redis.expects(:sadd).with("#{namespace}:foo", "a", "b", "c")
-      subject.update_from_hash(hsh)
+      subject.update_job_data_from_hash(hsh)
     end
   end
 
@@ -56,7 +56,7 @@ describe Rector::Backends::Redis do
       redis.stubs(:type).with("#{namespace}:foo").returns("string")
       redis.stubs(:get).with("#{namespace}:foo").returns("5")
 
-      subject.read_to_hash.should == { "foo" => 5 }
+      subject.read_job_data_to_hash.should == { "foo" => 5 }
     end
 
     it "reads lists" do
@@ -65,7 +65,7 @@ describe Rector::Backends::Redis do
       redis.stubs(:type).with("#{namespace}:foo").returns("list")
       redis.stubs(:lrange).with("#{namespace}:foo", 0, -1).returns(["bar"])
 
-      subject.read_to_hash.should == { "foo" => ["bar"] }
+      subject.read_job_data_to_hash.should == { "foo" => ["bar"] }
     end
 
     it "reads sets" do
@@ -74,7 +74,7 @@ describe Rector::Backends::Redis do
       redis.stubs(:type).with("#{namespace}:foo").returns("set")
       redis.stubs(:smembers).with("#{namespace}:foo").returns(["bar"])
 
-      subject.read_to_hash.should == { "foo" => Set.new(["bar"]) }
+      subject.read_job_data_to_hash.should == { "foo" => Set.new(["bar"]) }
     end
   end
 end
