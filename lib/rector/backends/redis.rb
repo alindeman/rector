@@ -28,6 +28,21 @@ module Rector
           end
         end
       end
+
+      def read_to_hash
+        Hash[keys.map { |k| [k, read(k)] }]
+      end
+
+      def keys
+        redis.smembers(KEY_LIST_SET)
+      end
+
+      def read(key)
+        case redis.type(key)
+        when "string"
+          redis.get(key).to_i
+        end
+      end
     end
   end
 end
