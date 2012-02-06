@@ -36,4 +36,13 @@ describe Rector::Backends::Redis do
     redis.expects(:rpush).with("#{namespace}:foo", "c")
     subject.save
   end
+
+  it "stores sets" do
+    subject["foo"] = Set.new(["a", "b", "c"])
+
+    redis.expects(:sadd).with("#{namespace}:foo", "a")
+    redis.expects(:sadd).with("#{namespace}:foo", "b")
+    redis.expects(:sadd).with("#{namespace}:foo", "c")
+    subject.save
+  end
 end

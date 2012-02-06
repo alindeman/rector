@@ -28,6 +28,8 @@ module Rector
           case val
           when Numeric
             redis.incrby(key, val)
+          when Set
+            val.each { |v| redis.sadd(key, v) }
           when Enumerable
             val.each { |v| redis.rpush(key, v) }
           end
