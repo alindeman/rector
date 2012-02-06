@@ -20,4 +20,9 @@ describe Rector::Job do
       subject.join
     end
   end
+
+  it "loads data from the backend" do
+    backend.stubs(:read_job_data_to_hash).returns("foo" => "bar")
+    subject.data.should == { "foo" => "bar" }
+  end
 end

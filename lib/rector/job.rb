@@ -28,19 +28,23 @@ module Rector
     def id
       # TODO: Obviously there's a small chance of jobs overlapping here
       # Can do something more reliable for ID generation?
-      @id ||= SecureRandom.hex(8)
+      @id ||= SecureRandom.hex(10)
     end
 
     def allocate_worker_id
       # TODO: Obviously there's a small chance of jobs overlapping here
       # Can do something more reliable for ID generation?
-      "#{id}:#{SecureRandom.hex(10)}"
+      "#{id}:#{SecureRandom.hex(8)}"
     end
 
     def join
       while @backend.workers_working?
         sleep 5
       end
+    end
+
+    def data
+      @data ||= @backend.read_job_data_to_hash
     end
   end
 end
