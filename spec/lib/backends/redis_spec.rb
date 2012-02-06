@@ -4,6 +4,10 @@ describe Rector::Backends::Redis do
   let(:redis) { stub_everything("redis") }
 
   before do
+    def redis.multi
+      yield
+    end
+
     Rector.configure do |c|
       c.redis = redis
     end

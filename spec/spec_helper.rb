@@ -1,4 +1,5 @@
 require "rspec"
+require "mocha"
 
 require_relative "../lib/rector"
 

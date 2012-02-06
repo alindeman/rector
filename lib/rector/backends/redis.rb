@@ -22,16 +22,18 @@ module Rector
       end
 
       def save
-        @data.each do |key, val|
-          redis.sadd(KEYS_LIST_KEY, key)
+        redis.multi do
+          @data.each do |key, val|
+            redis.sadd(KEYS_LIST_KEY, key)
 
-          case val
-          when Numeric
-            redis.incrby(key, val)
-          when Set
-            val.each { |v| redis.sadd(key, v) }
-          when Enumerable
-            val.each { |v| redis.rpush(key, v) }
+            case val
+            when Numeric
+              redis.incrby(key, val)
+            when Set
+              val.each { |v| redis.sadd(key, v) }
+            when Enumerable
+              val.each { |v| redis.rpush(key, v) }
+            end
           end
         end
       end
