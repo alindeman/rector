@@ -1,5 +1,7 @@
 # Rector
 
+[![Build Status](https://secure.travis-ci.org/alindeman/rector.png)](http://travis-ci.org/alindeman/rector)
+
 ** RECTOR IS CURRENTLY VAPORWARE; THIS README IS SIMPLY MY THOUGHTS ON
 HOW IT MIGHT WORK **
 
