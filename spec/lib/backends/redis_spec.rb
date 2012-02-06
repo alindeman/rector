@@ -17,36 +17,33 @@ describe Rector::Backends::Redis do
   subject         { described_class.new(namespace) }
 
   it "stores a list of keys" do
-    subject["foo"] = 1
-    subject["bar"] = 2
+    hsh = {
+      "foo" => 1,
+      "bar" => 2
+    }
 
-    redis.expects(:sadd).with("#{namespace}:__keys__", "foo")
-    redis.expects(:sadd).with("#{namespace}:__keys__", "bar")
-    subject.save
+    redis.expects(:sadd).with("#{namespace}:__keys__", "foo", "bar")
+    subject.update_from_hash(hsh)
   end
 
   it "stores integers" do
-    subject["foo"] = 1
+    hsh = { "foo" => 1 }
 
     redis.expects(:incrby).with("#{namespace}:foo", 1)
-    subject.save
+    subject.update_from_hash(hsh)
   end
 
   it "stores lists" do
-    subject["foo"] = ["a", "b", "c"]
+    hsh = { "foo" => ["a", "b", "c"] }
 
-    redis.expects(:rpush).with("#{namespace}:foo", "a")
-    redis.expects(:rpush).with("#{namespace}:foo", "b")
-    redis.expects(:rpush).with("#{namespace}:foo", "c")
-    subject.save
+    redis.expects(:rpush).with("#{namespace}:foo", "a", "b", "c")
+    subject.update_from_hash(hsh)
   end
 
   it "stores sets" do
-    subject["foo"] = Set.new(["a", "b", "c"])
+    hsh = { "foo" => Set.new(["a", "b", "c"]) }
 
-    redis.expects(:sadd).with("#{namespace}:foo", "a")
-    redis.expects(:sadd).with("#{namespace}:foo", "b")
-    redis.expects(:sadd).with("#{namespace}:foo", "c")
-    subject.save
+    redis.expects(:sadd).with("#{namespace}:foo", "a", "b", "c")
+    subject.update_from_hash(hsh)
   end
 end
