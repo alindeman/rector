@@ -7,6 +7,7 @@ module Rector
       @data    = Hash.new
 
       @backend = Rector.backend_for(job_id)
+      @backend.add_worker(@id)
     end
 
     def job_id

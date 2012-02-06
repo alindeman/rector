@@ -17,6 +17,11 @@ describe Rector::Worker do
     subject.job_id.should == "zyx987"
   end
 
+  it "notifies the backend of workers being created" do
+    backend.expects(:add_worker).with(worker_id)
+    subject
+  end
+
   describe "#finish" do
     it "notifies the backend" do
       backend.expects(:finish_worker).with(worker_id)
