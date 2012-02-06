@@ -43,6 +43,11 @@ module Rector
         redis.scard(WORKER_LIST_SET).to_i > 0
       end
 
+      def cleanup
+        redis.del(*keys)
+        redis.del(KEY_LIST_SET, WORKER_LIST_SET)
+      end
+
       private
 
       def redis

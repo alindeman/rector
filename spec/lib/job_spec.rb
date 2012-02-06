@@ -25,4 +25,9 @@ describe Rector::Job do
     backend.stubs(:read_job_data_to_hash).returns("foo" => "bar")
     subject.data.should == { "foo" => "bar" }
   end
+
+  it "delegates to the backend for cleanup" do
+    backend.expects(:cleanup)
+    subject.cleanup
+  end
 end

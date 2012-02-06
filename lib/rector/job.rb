@@ -46,5 +46,9 @@ module Rector
     def data
       @data ||= @backend.read_job_data_to_hash
     end
+
+    def cleanup
+      @backend.cleanup
+    end
   end
 end

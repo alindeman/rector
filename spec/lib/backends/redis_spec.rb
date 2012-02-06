@@ -97,4 +97,12 @@ describe Rector::Backends::Redis do
       subject.workers_working?.should be_false
     end
   end
+
+  it "cleans up when requests" do
+    redis.stubs(:smembers).returns(["a", "b"])
+    redis.expects(:del).with("#{job_id}:a", "#{job_id}:b")
+    redis.expects(:del).with("#{job_id}:__keys__", "#{job_id}:__workers__")
+
+    subject.cleanup
+  end
 end

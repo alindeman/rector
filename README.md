@@ -51,6 +51,8 @@ job.join
 job.data.each do |word, count|
   puts "#{word} was seen #{count} times across all files"
 end
+
+job.cleanup
 ```
 
 ## Job Processing (Workers)
