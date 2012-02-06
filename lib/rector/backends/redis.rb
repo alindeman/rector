@@ -41,6 +41,8 @@ module Rector
         case redis.type(key)
         when "string"
           redis.get(key).to_i
+        when "set"
+          Set.new(redis.smembers(key))
         when "list"
           redis.lrange(key, 0, -1)
         end
