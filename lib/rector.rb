@@ -18,5 +18,9 @@ module Rector
     def configure
       yield configuration
     end
+
+    def backend_for(job_id)
+      Rector::Backends::Redis.new(job_id)
+    end
   end
 end

@@ -4,6 +4,8 @@ module Rector
       KEY_LIST_SET    = "__keys__"
       WORKER_LIST_SET = "__workers__"
 
+      attr_reader :job_id
+
       def initialize(job_id)
         @job_id = job_id
       end
