@@ -22,5 +22,12 @@ describe Rector::Worker do
       backend.expects(:finish_worker).with(worker_id)
       subject.finish
     end
+
+    it "saves data" do
+      subject.data["foo"] = "bar"
+
+      backend.expects(:update_job_data_from_hash).with("foo" => "bar")
+      subject.finish
+    end
   end
 end
