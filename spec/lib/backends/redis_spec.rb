@@ -23,7 +23,8 @@ describe Rector::Backends::Redis do
         "bar" => 2
       }
 
-      redis.expects(:sadd).with("#{job_id}:__keys__", ["foo", "bar"])
+      redis.expects(:sadd).with("#{job_id}:__keys__", "foo")
+      redis.expects(:sadd).with("#{job_id}:__keys__", "bar")
       subject.update_job_data_from_hash(hsh)
     end
 
@@ -37,14 +38,18 @@ describe Rector::Backends::Redis do
     it "stores lists" do
       hsh = { "foo" => ["a", "b", "c"] }
 
-      redis.expects(:rpush).with("#{job_id}:foo", ["a", "b", "c"])
+      redis.expects(:rpush).with("#{job_id}:foo", "a")
+      redis.expects(:rpush).with("#{job_id}:foo", "b")
+      redis.expects(:rpush).with("#{job_id}:foo", "c")
       subject.update_job_data_from_hash(hsh)
     end
 
     it "stores sets" do
       hsh = { "foo" => Set.new(["a", "b", "c"]) }
 
-      redis.expects(:sadd).with("#{job_id}:foo", ["a", "b", "c"])
+      redis.expects(:sadd).with("#{job_id}:foo", "a")
+      redis.expects(:sadd).with("#{job_id}:foo", "b")
+      redis.expects(:sadd).with("#{job_id}:foo", "c")
       subject.update_job_data_from_hash(hsh)
     end
   end

@@ -14,16 +14,16 @@ module Rector
 
       def update_job_data_from_hash(hsh)
         redis.multi do
-          redis.sadd(KEY_LIST_SET, hsh.keys)
+          hsh.keys.each { |k| redis.sadd(KEY_LIST_SET, k) }
 
           hsh.each do |key, val|
             case val
             when Numeric
               redis.incrby(key, val)
             when Set
-              redis.sadd(key, val.to_a)
+              val.each { |v| redis.sadd(key, v) }
             when Enumerable
-              redis.rpush(key, val)
+              val.each { |v| redis.rpush(key, v) }
             end
           end
         end
