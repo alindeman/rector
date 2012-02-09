@@ -1,3 +1,5 @@
+require "set"
+
 module Rector
   module Backends
     class Redis
@@ -12,16 +14,16 @@ module Rector
 
       def update_job_data_from_hash(hsh)
         redis.multi do
-          redis.sadd(KEY_LIST_SET, *hsh.keys)
+          redis.sadd(KEY_LIST_SET, hsh.keys)
 
           hsh.each do |key, val|
             case val
             when Numeric
               redis.incrby(key, val)
             when Set
-              redis.sadd(key, *val)
+              redis.sadd(key, val.to_a)
             when Enumerable
-              redis.rpush(key, *val)
+              redis.rpush(key, val)
             end
           end
         end
