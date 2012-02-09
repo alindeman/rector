@@ -2,9 +2,6 @@
 
 [![Build Status](https://secure.travis-ci.org/alindeman/rector.png)](http://travis-ci.org/alindeman/rector)
 
-** RECTOR IS CURRENTLY VAPORWARE; THIS README IS SIMPLY MY THOUGHTS ON
-HOW IT MIGHT WORK **
-
 Rector allows coordination of a number of jobs spawned with a mechanism
 like Resque (though any job manager will do). If you are able to parallelize
 the processing of a task, yet all these tasks are generating metrics,
