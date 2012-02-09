@@ -96,10 +96,10 @@ describe Rector::Backends::Redis do
 
     it "knows if workers are still working" do
       redis.stubs(:scard).with("#{job_id}:__workers__").returns("1")
-      subject.workers_working?.should be_true
+      subject.num_workers_working.should == 1
 
       redis.stubs(:scard).with("#{job_id}:__workers__").returns("0")
-      subject.workers_working?.should be_false
+      subject.num_workers_working.should == 0
     end
   end
 

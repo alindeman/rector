@@ -13,7 +13,7 @@ describe Rector::Job do
   end
 
   it "waits for workers to complete" do
-    backend.expects(:workers_working?).at_least_once.returns(true).then.returns(false)
+    backend.expects(:num_workers_working).at_least_once.returns(1).then.returns(0)
     subject.stubs(:sleep)
 
     Timeout.timeout(2) do

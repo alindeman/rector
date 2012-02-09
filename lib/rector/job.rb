@@ -35,9 +35,13 @@ module Rector
     end
 
     def join
-      while @backend.workers_working?
+      while num_workers_working > 0
         sleep 5
       end
+    end
+
+    def num_workers_working
+      @backend.num_workers_working
     end
 
     def data

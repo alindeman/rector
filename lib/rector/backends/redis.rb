@@ -41,8 +41,8 @@ module Rector
         redis.srem(WORKER_LIST_SET, worker_id)
       end
 
-      def workers_working?
-        redis.scard(WORKER_LIST_SET).to_i > 0
+      def num_workers_working
+        redis.scard(WORKER_LIST_SET).to_i
       end
 
       def cleanup
