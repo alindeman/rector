@@ -18,17 +18,14 @@ module Rector
       end
     end
 
-    attr_reader :workers
+    attr_reader :id, :workers
 
-    def initialize
+    # TODO: Obviously there's a small chance of jobs overlapping here
+    # Can do something more reliable for ID generation?
+    def initialize(id = SecureRandom.hex(10))
+      @id      = id
       @workers = WorkerCollection.new(self)
       @backend = Rector.backend_for(id)
-    end
-
-    def id
-      # TODO: Obviously there's a small chance of jobs overlapping here
-      # Can do something more reliable for ID generation?
-      @id ||= SecureRandom.hex(10)
     end
 
     def allocate_worker_id
